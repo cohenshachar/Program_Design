@@ -1,5 +1,5 @@
 package il.ac.technion.cs.sd.grades.external
-import il.ac.technion.cs.sd.RAMAUT.StorageDummy
+import il.ac.technion.cs.sd.dummy.StorageDummy
 /**
  * This package and class override the external library
  * which was automatically imported to the project (you can view it under
@@ -15,29 +15,19 @@ import il.ac.technion.cs.sd.RAMAUT.StorageDummy
  */
 class LineStorage {
     companion object {
-        private val lines = mutableListOf<String>()
-
-
         /** Appends a line to the END of the file */
         fun appendLine(line: String) {
-
-            this.lines.add(line)
+            StorageDummy.append(line)
         }
 
         /** Returns the line at index lineNumber (0-indexed) */
         fun read(lineNumber: Int): String {
-            return if(lineNumber in lines.indices)
-            {
-                this.lines[lineNumber]
-            }else{
-                ""
-            }
-
+            return StorageDummy.get(lineNumber) ?: ""
         }
 
         /** Returns the total number of lines in the file */
         fun numberOfLines(): Int {
-            return this.lines.size
+            return StorageDummy.size()
         }
     }
 }

@@ -1,6 +1,6 @@
-package il.ac.technion.cs.sd.RAMAUT
+package il.ac.technion.cs.sd.dummy
 
-class StorageDummy {
+object StorageDummy {
     private val storage = mutableListOf<String>()
 
     /** Appends a string to the end of the collection */
@@ -21,7 +21,6 @@ class StorageDummy {
             null
         }
     }
-
     /** Clears the collection */
     fun clear() {
         storage.clear()
