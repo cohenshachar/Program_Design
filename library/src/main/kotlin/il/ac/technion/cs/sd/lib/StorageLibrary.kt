@@ -19,7 +19,7 @@ class StorageLibrary {
                 val id = item.getId()
                 LineStorage.appendLine(item.toStorageString()) // Add item's string to LineStorage
                 val lineNum = LineStorage.numberOfLines()
-                idToLineNumMap[id] = lineNum // Map the ID to its line number
+                idToLineNumMap[id.toInt()] = lineNum // Map the ID to its line number
 
             }
         }
@@ -41,9 +41,9 @@ class StorageLibrary {
 
 
         }
-        fun retrieveById(id: Int):String{
-            val linenum=getLine(id)
-            return if(linenum==-1)
+        fun retrieveById(id: String):String{
+            val linenum=getLine(id.toInt())
+            return if(linenum == null || linenum==-1)
             {
                 ""
             }else{
