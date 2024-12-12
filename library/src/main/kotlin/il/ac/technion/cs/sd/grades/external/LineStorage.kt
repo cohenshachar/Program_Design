@@ -15,22 +15,29 @@ package il.ac.technion.cs.sd.grades.external
  */
 class LineStorage {
     companion object {
+        private val lines = mutableListOf<String>()
+
 
         /** Appends a line to the END of the file */
         fun appendLine(line: String) {
-            TODO("Implement me!")
+
+            this.lines.add(line)
         }
 
         /** Returns the line at index lineNumber (0-indexed) */
         fun read(lineNumber: Int): String {
-            TODO("Implement me!")
-            return ""
+            return if(lineNumber in lines.indices)
+            {
+                this.lines[lineNumber]
+            }else{
+                ""
+            }
+
         }
 
         /** Returns the total number of lines in the file */
         fun numberOfLines(): Int {
-            TODO("Implement me!")
-            return 0
+            return this.lines.size
         }
     }
 }

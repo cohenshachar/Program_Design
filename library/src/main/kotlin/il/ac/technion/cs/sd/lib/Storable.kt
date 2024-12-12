@@ -6,4 +6,5 @@ interface Storable {
 
 interface UniquelyIdentifiedStorable :  Storable{
     fun getId(): String
+
 }
