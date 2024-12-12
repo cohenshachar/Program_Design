@@ -8,6 +8,11 @@ import il.ac.technion.cs.sd.grades.external.LineStorage
  * you will need to update the import statements in GradesInitializer.kt
  * and in GradesReader.kt.
  */
+
 class StorageLibrary {
-    /** TODO: Implement me! */
+    fun store(items: List<Storable>) {
+        items.forEach { item ->
+            LineStorage.appendLine(item.toStorageString())
+        }
+    }
 }

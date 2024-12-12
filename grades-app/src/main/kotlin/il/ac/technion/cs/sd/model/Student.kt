@@ -1,6 +1,8 @@
 package il.ac.technion.cs.sd.model
 
-class Student private constructor(val id: UInt, var grade: Int) {
+import il.ac.technion.cs.sd.lib.Storable
+
+class Student private constructor(val id: UInt, var grade: Int) : Storable {
     companion object {
         fun create(id: String, grade: String): Student? {
             val trimmedId = id.trim()
@@ -21,5 +23,9 @@ class Student private constructor(val id: UInt, var grade: Int) {
             val parsedGrade = this.toIntOrNull()
             return parsedGrade != null && parsedGrade in 0..100
         }
+    }
+
+    override fun toStorageString(): String {
+        return "$id,$grade"
     }
 }
