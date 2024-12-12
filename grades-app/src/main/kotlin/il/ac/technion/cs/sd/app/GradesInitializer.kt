@@ -6,6 +6,6 @@ class GradesInitializer {
     /** Saves csvData persistently, so that it could be run using GradesRunner. */
     fun setup(csvData: String) {
         val students = DataToStudentParser().parse(csvData)
-        val storage = StorageLibrary().store(students)
+        val storage = StorageLibrary.storeUnique(students)
     }
 }

@@ -2,14 +2,14 @@ package il.ac.technion.cs.sd.app
 
 import il.ac.technion.cs.sd.lib.StorageLibrary
 
-/**
- * This class will only be instantiated after
- * GradesInitializer has been called
- */
-class GradesReader {
+import il.ac.technion.cs.sd.model.Student
+
+class GradesReader{
     /** Returns the grade associated with 'id', or null */
     fun getGrade(id: String): Int? {
-        TODO("Implement me!")
-        return null
+        val studentData = StorageLibrary.retrieveById(id) ?: return null
+        val students = DataToStudentParser().parse(studentData)
+        val student = students.firstOrNull()
+        return student?.grade
     }
 }
