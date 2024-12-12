@@ -1,8 +1,8 @@
 package il.ac.technion.cs.sd.model
 
-import il.ac.technion.cs.sd.lib.Storable
+import il.ac.technion.cs.sd.lib.UniquelyIdentifiedStorable
 
-class Student private constructor(val id: UInt, var grade: Int) : Storable {
+class Student private constructor(val id: UInt, var grade: Int) : UniquelyIdentifiedStorable {
     companion object {
         fun create(id: String, grade: String): Student? {
             val trimmedId = id.trim()
@@ -27,5 +27,8 @@ class Student private constructor(val id: UInt, var grade: Int) : Storable {
 
     override fun toStorageString(): String {
         return "$id,$grade"
+    }
+    override fun getId(): String {
+        return "$id"
     }
 }

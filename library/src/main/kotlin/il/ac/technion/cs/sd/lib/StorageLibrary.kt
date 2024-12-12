@@ -10,8 +10,9 @@ import il.ac.technion.cs.sd.grades.external.LineStorage
  */
 
 class StorageLibrary {
-    fun store(items: List<Storable>) {
+    fun storeUnique(items: List<UniquelyIdentifiedStorable>) {
         items.forEach { item ->
+            item.getId()
             LineStorage.appendLine(item.toStorageString())
         }
     }
