@@ -1,19 +1,17 @@
 package il.ac.technion.cs.sd.dummy
 
 object StorageDummy {
-    private val storage = mutableListOf<String>()
 
-    /** Appends a string to the end of the collection */
+    private val storage = mutableListOf<String>()
     fun append(item: String) {
         storage.add(item)
     }
-
-    /** Returns the number of items in the collection */
+    /**number of lines inserted*/
     fun size(): Int {
         return storage.size
     }
 
-    /** Returns the item at the specified index */
+    /** Returns the item at the specified index-line */
     fun get(index: Int): String? {
         return if (index in 0 until storage.size) {
             storage[index]
@@ -21,7 +19,7 @@ object StorageDummy {
             null
         }
     }
-    /** Clears the collection */
+    /** clears the collection - to use between tests */
     fun clear() {
         storage.clear()
     }

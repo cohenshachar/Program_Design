@@ -9,93 +9,116 @@ import il.ac.technion.cs.sd.grades.external.LineStorage
  * and in GradesReader.kt.
  */
 
-class TrieNode<T : UniquelyIdentifiedStorable>(val value: Char, var isEndOfWord: Boolean = false, var payload: String? = null) {
-    val children = mutableMapOf<Char, TrieNode<T>>()
-}
-class Trie<T : UniquelyIdentifiedStorable> {
-    private val root = TrieNode<T>(' ')
+class GenericGradeManager<T> {
+    private val data = sortedMapOf<Int, T>() // Map of id to grade
 
-    fun insert(item: UniquelyIdentifiedStorable) {
-        var currentNode = root
-        val word = item.getId()
-        for (char in word) {
-            currentNode = currentNode.children.computeIfAbsent(char) { TrieNode(char) }
-        }
-        currentNode.isEndOfWord = true
-        currentNode.payload = item.toStorageString()
+    fun insert(id: Int, grade: T)// INSERT OR UPDATE IF EXISTS
+    {
+        data[id] = grade
+    }
+    fun getGrade(id: Int): T? {
+        return data[id]
     }
 
-    fun insertAll(items: List<T>) {
-        for (item in items) {
-            insert(item)
-        }
+    // Retrieve all data, sorted by id
+    fun getAllData(): List<Pair<Int, T>> {
+        return data.entries.map { it.key to it.value }
     }
-
-    fun getAsFormatedStringspaced(): List<String> {
-        val result = mutableListOf<String>()
-        formatNode(root, result, "")
-        return result
-    }
-
-    private fun formatNode(node: TrieNode<T>, result: MutableList<String>, prefix: String) {
-        if (node != root) {
-            result.add("$prefix${node.value}")
-        }
-        for ((char, child) in node.children) {
-            result.add("$prefix${node.value} -> $char")
-            formatNode(child, result, "$prefix${node.value} -> ")
-        }
-        if (node.isEndOfWord) {
-            result.add("$prefix${node.value} (end)")
-        }
+    fun clear(){
+        data.clear()
     }
 }
-
 class StorageLibrary {
     companion object {
 
         private val idToLineNumMap = mutableMapOf<Int, Int>() // last line the id was saved in
-
+        private val mappedData=GenericGradeManager<UniquelyIdentifiedStorable>() // no need for this
+        private var numLines=0
         fun storeUnique(items: List<UniquelyIdentifiedStorable>) {
-            items.forEach { item ->
-                val id = item.getId()
-                LineStorage.appendLine(item.toStorageString()) // Add item's string to LineStorage
+            numLines=items.size
+            items.forEach{item->
+                val id=item.getId()
+                mappedData.insert(id.toInt(),item)
+            }
+
+            val itemsSorted= mappedData.getAllData()
+
+            itemsSorted.forEach { item ->
+                val id = item.first
+                val data = item.second
+                LineStorage.appendLine(data.toStorageString()) // Add item as a string to LineStorage
                 val lineNum = LineStorage.numberOfLines()
-                idToLineNumMap[id.toInt()] = lineNum // Map the ID to its line number
-            }
-        }
-
-        fun hasId(id: Int): Boolean {
-            return if (id in idToLineNumMap) {
-                true
-            } else {
-                println("ID $id not found.")
-                false
-            }
-        }
-        fun getLine(id:Int): Int?{
-            return if (id in idToLineNumMap) {
-                idToLineNumMap[id]
-            }else {
-                return -1
+                idToLineNumMap[id] = lineNum // map the ID to its line number
             }
 
-
         }
-        fun retrieveById(id: String):String{
-            val linenum=getLine(id.toInt())
-            return if(linenum == null || linenum==-1)
+
+
+        fun getLine(id:String): Int?{
+         val dataOfId= binarySearchIterativeFromExternal(id.toInt())
+            return if(dataOfId==null) {
+                null
+
+            }else
             {
-                ""
-            }else{
-                LineStorage.read(linenum)
+                dataOfId.first
+            }
+        }
 
+/**
+ * this function does binarysearch in linestorage
+ * @param target - id of someone that we search in file
+ * @return a pair <int, string> , first = num of line found the id in it and second=data of id that has been found
+ */
+        private fun  binarySearchIterativeFromExternal( target: Int): Pair<Int,String>? {
+            var left = 0
+            var right=LineStorage.numberOfLines()-1
+
+            while (left <= right) {
+                val mid = left + (right - left) / 2
+                val dataString=LineStorage.read(mid)
+
+                val parts = dataString.split(",") // Split the string at the comma
+                val dataConverted = if (parts.isNotEmpty()) {
+                    parts[0].toIntOrNull() ?: -1 //
+                }else
+                {
+                    -1
+                }
+
+                if(dataConverted  ==-1) // error here ... must not happen
+                {
+                    println("Invalid input or no data found.")
+                    return null
+                }
+                when {
+
+                    dataConverted  == target -> return Pair<Int,String>(mid,dataString) // Target found
+                    dataConverted  < target -> left = mid + 1 // Move to the right half
+                    else -> right = mid - 1 // Move to the left half
+                }
             }
 
+            return null // Target not found
         }
+
+        fun retrieveById(id: String):String?{
+            val id_converted=id.toIntOrNull()
+            if(id_converted==null){
+                return null
+            }
+            val dataFound=binarySearchIterativeFromExternal(id_converted)
+            return if(dataFound == null ) {
+                null
+            }else{
+                dataFound.second
+            }
+        }
+
         fun clearStorage(){
             StorageDummy.clear()
             idToLineNumMap.clear()
+            mappedData.clear()
         }
 
     }

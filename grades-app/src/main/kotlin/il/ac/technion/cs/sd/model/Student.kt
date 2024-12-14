@@ -8,7 +8,7 @@ class Student private constructor(val id: UInt, var grade: Int) : UniquelyIdenti
             val trimmedId = id.trim()
             val trimmedGrade = grade.trim()
             return if (trimmedId.isValidId() && trimmedGrade.isValidGrade()) {
-                Student(trimmedId.toUInt(), trimmedGrade.toInt())
+                Student(trimmedId.toUInt(), trimmedGrade.toInt()) // TODO: can be UINT  both ?
             } else {
                 null
             }
@@ -21,7 +21,7 @@ class Student private constructor(val id: UInt, var grade: Int) : UniquelyIdenti
 
         private fun String.isValidGrade(): Boolean {
             val parsedGrade = this.toIntOrNull()
-            return parsedGrade != null && parsedGrade in 0..100
+            return parsedGrade != null && parsedGrade in 0..100 //TODO: maybe here 0..999?
         }
     }
 
