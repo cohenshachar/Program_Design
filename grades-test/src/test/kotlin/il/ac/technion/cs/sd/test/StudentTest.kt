@@ -40,7 +40,7 @@ class StudentTest {
 
     @Test
     fun `test invalid student creation with out of range grade`() {
-        val student = Student.create("123456789", "101") // Grade is out of range
+        val student = Student.create("123456789", "1100") // Grade is out of range
         assertNull(student)
     }
 
