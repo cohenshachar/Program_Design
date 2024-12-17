@@ -21,7 +21,7 @@ class Student private constructor(val id: UInt, var grade: Int) : UniquelyIdenti
 
         private fun String.isValidGrade(): Boolean {
             val parsedGrade = this.toIntOrNull()
-            return parsedGrade != null && parsedGrade in 0..100 //TODO: maybe here 0..999?
+            return parsedGrade != null && parsedGrade in 0..999 //TODO: maybe here 0..999?
         }
     }
 

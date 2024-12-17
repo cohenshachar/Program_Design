@@ -4,11 +4,16 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 import il.ac.technion.cs.sd.model.Student
+import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.* // Use if you prefer suspending `delay`
 
 class StudentTest {
 
     @Test
     fun `test valid student creation`() {
+
+
+
         val student = Student.create("123456789", "85")
         assertNotNull(student)
         assertEquals(123456789u, student?.id)

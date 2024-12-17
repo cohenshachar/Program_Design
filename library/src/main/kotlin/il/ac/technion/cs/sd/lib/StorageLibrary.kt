@@ -31,7 +31,7 @@ class GenericGradeManager<T> {
 class StorageLibrary {
     companion object {
 
-        private val idToLineNumMap = mutableMapOf<Int, Int>() // last line the id was saved in
+
         private val mappedData=GenericGradeManager<UniquelyIdentifiedStorable>() // no need for this
         private var numLines=0
         fun storeUnique(items: List<UniquelyIdentifiedStorable>) {
@@ -47,8 +47,7 @@ class StorageLibrary {
                 val id = item.first
                 val data = item.second
                 LineStorage.appendLine(data.toStorageString()) // Add item as a string to LineStorage
-                val lineNum = LineStorage.numberOfLines()
-                idToLineNumMap[id] = lineNum // map the ID to its line number
+
             }
 
         }
@@ -117,7 +116,6 @@ class StorageLibrary {
 
         fun clearStorage(){
             StorageDummy.clear()
-            idToLineNumMap.clear()
             mappedData.clear()
         }
 

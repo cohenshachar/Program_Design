@@ -1,5 +1,7 @@
 package il.ac.technion.cs.sd.grades.external
 import il.ac.technion.cs.sd.dummy.StorageDummy
+import kotlin.system.measureTimeMillis
+
 /**
  * This package and class override the external library
  * which was automatically imported to the project (you can view it under
@@ -22,11 +24,29 @@ class LineStorage {
 
         /** Returns the line at index lineNumber (0-indexed) */
         fun read(lineNumber: Int): String {
-            return StorageDummy.get(lineNumber) ?: ""
+
+            var toRtn=""
+            val elapsed = measureTimeMillis {
+                  toRtn =  StorageDummy.get(lineNumber) ?: ""
+                val towait=(toRtn.length)
+            //    println("Executing some task...")
+                Thread.sleep(towait.toLong()) // Example task that takes time
+            }
+          //  println("took..." + elapsed)
+            return toRtn
+
+
         }
 
         /** Returns the total number of lines in the file */
         fun numberOfLines(): Int {
+            val elapsed = measureTimeMillis {
+
+             //   println("Executing some task...")
+                Thread.sleep(100) // Example task that takes time
+            }
+
+        //    println("Done!after "+elapsed+"millis")
             return StorageDummy.size()
         }
     }

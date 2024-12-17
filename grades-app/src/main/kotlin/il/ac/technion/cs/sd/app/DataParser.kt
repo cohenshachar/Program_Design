@@ -19,7 +19,7 @@ class DataToStudentParser : DataParser<Student> {
                     println("Invalid data: $line")
                 }
             } else {
-                println("Invalid line format: $line")
+                println("Invalid line format: $line") // no need just for debugging
             }
         }
         return students
